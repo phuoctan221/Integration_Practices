@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Employee Integration</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+      th {
+        background: #f2f2f2;
+      }
+      button {
+        padding: 8px 12px;
+        margin: 10px 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Employee List</h2>
+
+    <button onclick="loadEmployees()">Load Employees</button>
+    <button onclick="syncAll()">Sync ALL (HR → Payroll)</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Department</th>
+          <th>Position</th>
+        </tr>
+      </thead>
+      <tbody id="empBody"></tbody>
+    </table>
+
+    <script>
+      function loadEmployees() {
+        fetch("/api/employees")
+          .then((res) => res.json())
+          .then((data) => {
+            const tbody = document.getElementById("empBody");
+            tbody.innerHTML = "";
+
+            data.forEach((e) => {
+              tbody.innerHTML += `
+                <tr>
+                  <td>${e.employee_id}</td>
+                  <td>${e.full_name}</td>
+                  <td>${e.department}</td>
+                  <td>${e.position}</td>
+                </tr>
+              `;
+            });
+          });
+      }
+
+      function syncAll() {
+        fetch("/api/sync/all")
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message);
+            loadEmployees();
+          });
+      }
+
+      loadEmployees();
+    </script>
+  </body>
+</html>
