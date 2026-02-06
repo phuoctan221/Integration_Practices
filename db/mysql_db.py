@@ -1,5 +1,6 @@
 import pymysql
 
+# Sửa lại phù hợp với cấu hình MySQL của từng bạn rồi test thử kết nối được chưa nhé
 def connect_mysql():
     return pymysql.connect(
         host="localhost",
@@ -9,3 +10,4 @@ def connect_mysql():
         port=3307,
         cursorclass=pymysql.cursors.DictCursor
     )
+
